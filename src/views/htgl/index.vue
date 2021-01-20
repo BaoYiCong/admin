@@ -4,7 +4,7 @@
       <el-header>
         <div class="header-left">
           <img src="../../assets/heima.b5a855ee.png" alt="" />
-          <h1>电商后台管理系统</h1>
+          <h1>包意聪-电商后台管理系统</h1>
         </div>
         <div>
           <el-button type="info" @click="outlogin">退出</el-button>
@@ -95,6 +95,8 @@ export default {
     },
     outlogin() {
       sessionStorage.removeItem("token");
+      this.$success("退出成功");
+      this.$router.push('/login')
     },
   },
   //生命周期

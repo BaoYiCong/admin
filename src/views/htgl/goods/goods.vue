@@ -32,16 +32,27 @@
       <el-table-column type="index" width="50" label="#"> </el-table-column>
       <el-table-column property="goods_name" label="商品名称" width="600px">
       </el-table-column>
-      <el-table-column property="name" label="商品价格(元)"></el-table-column>
-      <el-table-column property="name" label="商品重量"></el-table-column>
-      <el-table-column property="name" label="创建时间"></el-table-column>
+      <el-table-column
+        property="goods_price"
+        label="商品价格(元)"
+      ></el-table-column>
+      <el-table-column
+        property="goods_weight"
+        label="商品重量"
+      ></el-table-column>
+      <el-table-column label="创建时间">
+        <template slot-scope="scope">
+          {{ new Date("Y-m-d H:i:s", scope.row.upd_time) }}
+        </template>
+      </el-table-column>
       <el-table-column property="name" label="操作">
-        <template>
+        <template slot-scope="scope">
           <el-button type="primary" icon="el-icon-edit" size="mini"></el-button>
           <el-button
             type="danger"
             icon="el-icon-delete"
             size="mini"
+            @click="del(scope.row)"
           ></el-button>
         </template>
       </el-table-column>
@@ -75,6 +86,21 @@ export default {
   watch: {},
   // 组件方法
   methods: {
+    formatDate(value) {
+      let date = new Date(value);
+      let y = date.getFullYear();
+      let MM = date.getMonth() + 1;
+      MM = MM < 10 ? "0" + MM : MM;
+      let d = date.getDate();
+      d = d < 10 ? "0" + d : d;
+      let h = date.getHours();
+      h = h < 10 ? "0" + h : h;
+      let m = date.getMinutes();
+      m = m < 10 ? "0" + m : m;
+      let s = date.getSeconds();
+      s = s < 10 ? "0" + s : s;
+      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
+    },
     // 模糊搜索
     chaxun() {},
     // 获取商品列表
@@ -85,9 +111,23 @@ export default {
           this.pagenum,
           this.pagesize
         );
-        this.tableData = data.data.goods
+        this.tableData = data.data.goods;
         console.log(data.data.goods);
       } catch (error) {}
+    },
+    // 删除
+    async del(row) {
+      console.log(row);
+      try {
+        await this.$ask("此操作将永久删除,是否继续？");
+        const {
+          data: { meta },
+        } = await this.$apis.delgoodsonce(row.goods_id);
+        this.$message.success("删除成功");
+        this.getgoods();
+      } catch (error) {
+        this.$message.error("已取消");
+      }
     },
   },
   //生命周期

@@ -11,7 +11,7 @@
       <el-table-column type="index" label="#"></el-table-column>
       <el-table-column prop="cat_name" label="分类名称"></el-table-column>
       <el-table-column label="是否有效">
-        <i class="el-icon-success" style="color: green"></i>
+        <i class="el-icon-success" style="color: #39CE39"></i>
       </el-table-column>
       <el-table-column prop="cat_level" label="排序">
         <template slot-scope="scope">
@@ -35,7 +35,11 @@
             @click="bianji(scope.row.cat_id, scope.row.cat_name)"
             >编辑</el-button
           >
-          <el-button type="danger" icon="el-icon-delete" size="mini" @click="del(scope.row.cat_id)"
+          <el-button
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="del(scope.row.cat_id)"
             >删除</el-button
           >
         </template>
@@ -119,21 +123,22 @@ export default {
   watch: {},
   // 组件方法
   methods: {
-    // 添加
-    btngoodsxg() {},
     // 编辑
     bianji(id, cat_name) {
       this.id = id;
       this.formm.cat_name = cat_name;
       this.dialogFormVisiblle = true;
     },
+    // 添加
     async btngoodsxg() {
       try {
         const { data } = await this.$apis.classgoods(
           this.id,
           this.formm.cat_name
         );
-        console.log(this.formm.cat_name);
+        this.$message.success("修改成功");
+        this.dialogFormVisiblle = false;
+        this.getusergoods();
       } catch (error) {
         console.log(error);
       }
@@ -162,16 +167,16 @@ export default {
       this.getusergoods();
     },
     // 删除
-     async del(id){
-       try {
-         await this.$ask("此操作将永久删除,是否继续？");
-         this.$apis.delfenlei(id)
-         this.$message.success("删除成功")
-         this.getusergoods()
-       } catch (error) {
-         this.$message.error("已取消")
-       }
-    } 
+    async del(id) {
+      try {
+        await this.$ask("此操作将永久删除,是否继续？");
+        this.$apis.delfenlei(id);
+        this.$message.success("删除成功");
+        this.getusergoods();
+      } catch (error) {
+        this.$message.error("已取消");
+      }
+    },
   },
   //生命周期
   created() {},
