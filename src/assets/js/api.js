@@ -40,7 +40,7 @@ export default {
   offswitch({ id, mg_state }) {
     return axios.put(`users/${id}/state/${mg_state}`);
   },
-  // 删除列表数据            
+  // 删除列表数据
   deletelist(id) {
     return axios.delete(`users/${id}`);
   },
@@ -95,7 +95,7 @@ export default {
   },
   // 编辑提交分类
   classgoods(id, cat_name) {
-    return axios.put(`categories/${id}`, { cat_name });  
+    return axios.put(`categories/${id}`, { cat_name });
   },
   // 删除分类
   delfenlei(id) {
@@ -114,10 +114,13 @@ export default {
   getcategor(id) {
     return axios.get(`categories`);
   },
-  getcatmany(id,sel) {
+  getcatmany(id, sel) {
     return axios.get(`categories/${id}/attributes?sel=${sel}`);
   },
-  setFnelist(id,attrId){
-    return axios.put(`categories/${id}/attributes/${attrId}`)
-  }
+  setFnelist(id, attrId, attr_name, attr_sel) {
+    return axios.put(`categories/${id}/attributes/${attrId}`, {
+      attr_name: attr_name,
+      attr_sel: attr_sel,
+    });
+  },
 };

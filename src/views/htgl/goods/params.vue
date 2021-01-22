@@ -234,8 +234,10 @@ export default {
     async btngoodsxg() {
       try {
         const { data } = await this.$apis.setFnelist(
+          this.selectKeys[2],
           this.id,
-          this.this.formm.cat_name
+          this.this.formm.cat_name,
+          this.sel
         );
         this.$success("修改成功");
         this.dialogFormVisiblle = false;

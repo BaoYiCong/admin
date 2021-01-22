@@ -57,6 +57,12 @@ export default new Router({
           name: "categories",
           component: () => import("./views/htgl/goods/categories"),
         },
+        // 添加用户
+        {
+          path: "/adduser",
+          name: "adduse",
+          component: () => import("./views/htgl/goods/children/adduser"),
+        }
       ],
     },
     {

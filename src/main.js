@@ -7,6 +7,9 @@ import axios from "axios";
 //引入外部封装的方法
 import apis from "./assets/js/api";
 
+// scc
+import "./assets/css/index.css";
+
 // 引入外部封装的方法
 import "./plugins/element";
 

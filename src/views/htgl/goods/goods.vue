@@ -17,7 +17,7 @@
         </el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary">添加用户</el-button>
+        <el-button type="primary" @click="addsetuser">添加用户</el-button>
       </el-form-item>
     </el-form>
 
@@ -57,6 +57,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <!-- 分页器 -->
+    <el-pagination
+      style="margin-top: 15px"
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pagenum"
+      :page-sizes="[5, 10, 20, 30]"
+      :page-size="pagesize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    >
+    </el-pagination>
   </div>
 </template>
 
@@ -75,9 +87,10 @@ export default {
       query: "",
       // 页数
       pagenum: 1,
-      pagesize: 10,
+      pagesize: 5,
       // 用户列表
       tableData: [],
+      total: 10,
     };
   },
   // 计算属性
@@ -86,23 +99,15 @@ export default {
   watch: {},
   // 组件方法
   methods: {
-    formatDate(value) {
-      let date = new Date(value);
-      let y = date.getFullYear();
-      let MM = date.getMonth() + 1;
-      MM = MM < 10 ? "0" + MM : MM;
-      let d = date.getDate();
-      d = d < 10 ? "0" + d : d;
-      let h = date.getHours();
-      h = h < 10 ? "0" + h : h;
-      let m = date.getMinutes();
-      m = m < 10 ? "0" + m : m;
-      let s = date.getSeconds();
-      s = s < 10 ? "0" + s : s;
-      return y + "-" + MM + "-" + d + " " + h + ":" + m + ":" + s;
+    // 添加用户
+    addsetuser() {
+      // 切换添加页
+      this.$router.push('/adduser')
     },
     // 模糊搜索
-    chaxun() {},
+    chaxun() {
+      this.getgoods();
+    },
     // 获取商品列表
     async getgoods() {
       try {
@@ -113,6 +118,7 @@ export default {
         );
         this.tableData = data.data.goods;
         console.log(data.data.goods);
+        this.total = data.data.goods.length;
       } catch (error) {}
     },
     // 删除
@@ -128,6 +134,15 @@ export default {
       } catch (error) {
         this.$message.error("已取消");
       }
+    },
+    // 分液器
+    handleSizeChange(size) {
+      this.pagesize = size;
+      this.getgoods();
+    },
+    handleCurrentChange(num) {
+      this.pagenum = num;
+      this.getgoods();
     },
   },
   //生命周期
